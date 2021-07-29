@@ -19,7 +19,7 @@ $ roslaunch turtlebot3_navigation turtlebot3_navigation.launch
 - Go to your catkin_workspace, eg catkin_ws/src
 
 ```
-$ git clone roslaunch turtlebot3_navigation turtlebot3_navigation.launch
+$ git clone https://github.com/pllee4/robot-rest-api.git
 $ cd ..
 $ catkin_make
 $ roslaunch robot-rest-api rest_server.launch ## for server
