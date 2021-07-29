@@ -1,0 +1,3 @@
+<launch>
+  <node name='rest_client' type='rest_client.py' pkg='robot-rest-api' output='screen'/>
+</launch>
