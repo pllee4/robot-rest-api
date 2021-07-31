@@ -1,4 +1,9 @@
 # Robot REST API
+![GitHub Workflow Status](https://github.com/pllee4/robot-rest-api/workflows/ROS/badge.svg)
+![GitHub Workflow Status](https://github.com/pllee4/robot-rest-api/workflows/ROS%20Pylint/badge.svg)
+![GitHub Workflow Status](https://github.com/pllee4/robot-rest-api/workflows/Pylint/badge.svg)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/pllee4/robot-rest-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/pllee4/robot-rest-api/context:python)
+[![CodeFactor](https://www.codefactor.io/repository/github/pllee4/robot-rest-api/badge)](https://www.codefactor.io/repository/github/pllee4/robot-rest-api/overview/)
 
 ## Desription
 - This repo provides REST API for client to get the robot status that is reflected from ROS topic /move_base/status.
@@ -14,7 +19,7 @@ $ roslaunch turtlebot3_gazebo turtlebot3_world.launch
 $ roslaunch turtlebot3_navigation turtlebot3_navigation.launch 
 ```
 
-## Running of program
+## Running of server
 
 - Go to your catkin_workspace, eg catkin_ws/src
 
@@ -22,8 +27,15 @@ $ roslaunch turtlebot3_navigation turtlebot3_navigation.launch
 $ git clone https://github.com/pllee4/robot-rest-api.git
 $ cd ..
 $ catkin_make
-$ roslaunch robot-rest-api rest_server.launch ## for server
-$ roslaunch robot-rest-api rest_client.launch ## for client
+$ roslaunch robot-rest-api rest_server.launch
+```
+
+## Running of client
+
+```
+$ git clone https://github.com/pllee4/robot-rest-api.git
+$ cd robot-rest-api
+$ python src/rest_client.py
 ```
 
 ## References
