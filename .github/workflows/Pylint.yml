@@ -1,0 +1,26 @@
+name: Pylint
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install pip
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Analysing the code with pylint
+      run: |
+        pip install pylint
+        cd src/
+        pylint `ls -R|grep rest_client.py$|xargs`

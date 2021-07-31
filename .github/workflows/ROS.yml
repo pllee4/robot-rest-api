@@ -1,0 +1,28 @@
+name: ROS
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ros_distro: [melodic]
+        include:
+        - ros_distro: melodic
+          ubuntu_distro: bionic
+          extra_cmake_args: --cmake-target tests
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-${{ matrix.ubuntu_distro }}-ros-${{ matrix.ros_distro }}-ros-base-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create catkin workspace
+      run: mkdir -p /catkin_ws/src && cd /catkin_ws/src && /bin/bash -c "source /opt/ros/${{ matrix.ros_distro }}/setup.bash;
+           catkin_init_workspace"
+    - name: Copy code to catkin workspace
+      run: cd /catkin_ws/src && git clone -b devel https://github.com/pllee4/robot-rest-api
+    - name: Run catkin_make
+      run: cd /catkin_ws && /bin/bash -c "source /opt/ros/${{ matrix.ros_distro }}/setup.bash; catkin_make"

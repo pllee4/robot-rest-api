@@ -1,0 +1,47 @@
+name: ROS Pylint
+
+on:
+  push:
+  pull_request:
+  workflow_run:
+    workflows: ["ROS"]
+    types: 
+      - completed
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ros_distro: [melodic]
+        include:
+        - ros_distro: melodic
+          ubuntu_distro: bionic
+          extra_cmake_args: --cmake-target tests
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-${{ matrix.ubuntu_distro }}-ros-${{ matrix.ros_distro }}-ros-base-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create catkin workspace
+      run: mkdir -p /catkin_ws/src && cd /catkin_ws/src && /bin/bash -c "source /opt/ros/${{ matrix.ros_distro }}/setup.bash;
+           catkin_init_workspace"
+    - name: Copy code to catkin workspace
+      run: cd /catkin_ws/src && git clone -b devel https://github.com/pllee4/robot-rest-api
+    - name: Run catkin_make
+      run: cd /catkin_ws && /bin/bash -c "source /opt/ros/${{ matrix.ros_distro }}/setup.bash; catkin_make"
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Analysing the code with pylint
+      run: |
+        pip install pylint
+        cd /catkin_ws/src/robot-rest-api/src && /bin/bash -c "source /opt/ros/${{ matrix.ros_distro }}/setup.bash; pylint `ls -R|grep .py$|xargs`"
