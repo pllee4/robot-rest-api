@@ -1,6 +1,0 @@
-<launch>
-    <include file="$(find robot-rest-api)/launch/rest_server.launch">
-    </include>
-    <include file="$(find robot-rest-api)/launch/rest_client.launch">
-    </include>
-</launch>
