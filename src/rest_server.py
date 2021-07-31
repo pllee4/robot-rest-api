@@ -54,17 +54,17 @@ api = Api(app)
 api.add_resource(MoveBaseStatus, "/api/robot/status")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="REST Server")
-    parser.add_argument(
+    server_parser = argparse.ArgumentParser(description="REST Server")
+    server_parser.add_argument(
         "port_number", nargs="?", default="7201", type=int, help="port number"
     )
-    parser.add_argument(
+    server_parser.add_argument(
         "ip_address",
         nargs="?",
         default="127.0.0.1",
         help="ip_address for server",
     )
-    margs = parser.parse_args(rospy.myargv()[1:])
+    margs = server_parser.parse_args(rospy.myargv()[1:])
     port_number = margs.port_number
     ip_address = margs.ip_address
     app.run(ip_address, port=port_number)
