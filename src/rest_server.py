@@ -29,7 +29,6 @@ def ros_node():
     rospy.init_node('ros_rest_server', disable_signals=True)
     rospy.Subscriber("/move_base/status", GoalStatusArray,
                      move_base_status_callback)
-    rospy.spin()
 
 
 threading.Thread(target=ros_node).start()
