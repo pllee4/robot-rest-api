@@ -8,6 +8,9 @@ from actionlib_msgs.msg import GoalStatusArray
 from flask import Flask
 from flask_restful import Resource, Api
 
+# Python
+import argparse
+
 # ROS
 status = 0
 text = ""
@@ -53,4 +56,14 @@ class MoveBaseStatus(Resource):
 api.add_resource(MoveBaseStatus, "/api/robot/status")
 
 if __name__ == '__main__':
-    app.run(port=7201)
+    parser = argparse.ArgumentParser(description="REST Server")
+    parser.add_argument(
+        "port_number", nargs="?", default="7201", type=int, help="port number"
+    )
+    parser.add_argument(
+        "ip_address", nargs="?", default="127.0.0.1", help="ip_address for server"
+    )
+    margs = parser.parse_args(rospy.myargv()[1:])
+    port_number = margs.port_number
+    ip_address = margs.ip_address
+    app.run(ip_address, port=port_number)

@@ -1,3 +1,6 @@
 <launch>
-  <node name='rest_server' type='rest_server.py' pkg='robot-rest-api' output='screen'/>
+  <arg name="port_number" default="7201"/> 
+  <arg name="ip_address" value="127.0.0.1"/> 
+  <node name='rest_server' type='rest_server.py' pkg='robot-rest-api' output='screen' 
+          args='$(arg port_number) $(arg ip_address)'/>
 </launch>
