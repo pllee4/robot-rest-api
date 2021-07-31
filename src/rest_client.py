@@ -1,11 +1,30 @@
+"""
+rest_client.py
+Created on: Jul 31, 2021 16:50
+Description: REST API Client
+Copyright (c) 2021 Pin Loon Lee (pllee4)
+"""
 #!/usr/bin/env python
-import requests
 import time
 import json
+import argparse
+import requests
 
-if __name__ == '__main__':
-    port_number = 7201
-    ip_address = "127.0.0.1"
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="REST Client")
+    parser.add_argument(
+        "port_number", nargs="?", default="7201", type=int, help="port number"
+    )
+    parser.add_argument(
+        "ip_address",
+        nargs="?",
+        default="127.0.0.1",
+        help="ip_address for server",
+    )
+    margs = parser.parse_args()
+    port_number = margs.port_number
+    ip_address = margs.ip_address
     url = "http://" + ip_address + ":" + str(port_number) + "/api/robot/status"
     print("Requesting from " + url)
     while True:
