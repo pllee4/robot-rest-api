@@ -1,57 +1,26 @@
 #!/usr/bin/env python
-# ROS
-import rospy
-import threading
-from actionlib_msgs.msg import GoalStatusArray
-
-# Flask
-from flask import Flask
-from flask_restful import Resource, Api
-
-# ROS
-status = 0
-text = ""
-new_data_arrived = False
-
-
-def move_base_status_callback(data):
-    # TODO: update data and pass to server
-    if (data.status_list):
-        global status
-        global text
-        global new_data_arrived
-        status = data.status_list[0].status
-        text = data.status_list[0].text
-        new_data_arrived = True
-
-
-def ros_node():
-    rospy.init_node('ros_rest_server', disable_signals=True)
-    rospy.Subscriber("/move_base/status", GoalStatusArray,
-                     move_base_status_callback)
-    rospy.spin()
-
-
-threading.Thread(target=ros_node).start()
-
-# Flask
-app = Flask("REST Server")
-api = Api(app)
-
-
-class MoveBaseStatus(Resource):
-    def get(self):
-        # TODO: get data from robot_node
-        # TODO: check whether there is topic
-        global new_data_arrived
-        if (new_data_arrived):
-            return {'status': status, 'text': text}, 200
-            new_data_arrived = False
-        else:
-            return {'message': "Invalid status value"}, 400
-
-
-api.add_resource(MoveBaseStatus, "/api/robot/status")
+import requests
+import time
+import json
 
 if __name__ == '__main__':
-    app.run(port=7201)
+    port_number = 7201
+    ip_address = "127.0.0.1"
+    url = "http://" + ip_address + ":" + str(port_number) + "/api/robot/status"
+    print("Requesting from " + url)
+    while True:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            print("Status: " + str(response.status_code))
+            print(json.dumps(response.json()))
+        except requests.exceptions.HTTPError as errh:
+            print("Status: " + str(response.status_code))
+            print(json.dumps(response.json()))
+        except requests.exceptions.ConnectionError as errc:
+            print('{"Message": "Connection Error"}')
+        except requests.exceptions.Timeout as errt:
+            print('{"Message": "Request Timeout"}')
+        except requests.exceptions.RequestException as err:
+            print('{"Message": "Request Exception"}')
+        time.sleep(1)

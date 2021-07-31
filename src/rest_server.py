@@ -13,6 +13,7 @@ status = 0
 text = ""
 new_data_arrived = False
 
+
 def move_base_status_callback(data):
     # TODO: update data and pass to server
     if (data.status_list):
@@ -44,8 +45,8 @@ class MoveBaseStatus(Resource):
         # TODO: check whether there is topic
         global new_data_arrived
         if (new_data_arrived):
-            return {'status': status, 'text': text}, 200
             new_data_arrived = False
+            return {'status': status, 'text': text}, 200
         else:
             return {'message': "Invalid status value"}, 400
 
