@@ -38,5 +38,27 @@ $ cd robot-rest-api
 $ python src/rest_client.py
 ```
 
+## Debugging
+
+- If there is failure of running the above commands, 
+  you can verify the environment using [Docker](https://docs.docker.com/engine/install/ubuntu/)
+- After install Docker, run the following commands
+
+```
+$ sudo docker pull ros:melodic
+$ sudo docker run -it --name debug ros:melodic
+$ apt-get update
+$ apt install wget
+$ wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+$ python2.7 get-pip.py
+$ mkdir /catkin_ws/src -p && cd /catkin_ws/src
+$ git clone https://github.com/pllee4/robot-rest-api && cd robot-rest-api
+$ pip install -r requirements.txt
+$ cd /catkin_ws && catkin_make
+$ source devel/setup.bash
+$ roslaunch robot-rest-api rest_server.launch ## for server
+$ python /catkin_ws/src/robot-rest-api/src/rest_client.py ## for client
+```
+
 ## References
 - [TurtleBot3](https://emanual.robotis.com/docs/en/platform/turtlebot3/nav_simulation/)
